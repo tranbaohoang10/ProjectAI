@@ -17,6 +17,7 @@ public class AlphaBetaChess {
 		f.add(ui);
 		f.setSize(500,500);
 		f.setVisible(true);
+		System.out.println("hello");
 	}
 	public static String possibleMoves() {
 		return ""; //x1,y1,x2,y2 capture piece(ăn quân)

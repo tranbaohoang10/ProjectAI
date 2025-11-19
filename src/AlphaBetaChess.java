@@ -6,7 +6,7 @@ public class AlphaBetaChess {
 			{" "," "," "," "," "," "," "," "},
 			{" "," "," "," "," "," "," "," "},
 			{" "," "," "," "," "," "," "," "},
-			{" "," "," "," "," "," "," "," "},//dong 5 cot 4
+			{" "," "," "," ","A"," "," "," "},//dong 5 cot 4
 			{"P","P","P","P","P","P","P","P"},
 			{"R","K","B","Q","A","B","K","R"},
 	};
@@ -66,7 +66,57 @@ public static String possibleB(int i) {
 	return list;
 }
 public static String possibleQ(int i) {
-	String list = "";
+	String list = "",oldPiece;
+	//Lấy vị trí Hậu
+	int r = i/8, c = i%8;
+	int temp = 1;
+	//Duyệt 8 hướng quanh Hậu
+	// (-1,-1): chéo trái trên, (-1,0): trên,(-1,0): chéo phải trên
+	// (0,-1): trái,(0,1): phải
+	// (1,-1): chéo trái dưới, (1,0): dưới,(1,1): chéo phải dưới
+	for (int j = -1; j <=1; j++) {
+		for (int k = -1; k <=1; k++) {
+			try {
+//				{"r","k","b","q","a","b","k","r"},
+//				{"p","p*","p","p","p*","p","p*","p"},
+//				{" "," ","*"," ","*"," ","*"," "},
+//				{" "," "," ","*","*","*"," "," "},
+//				{"*","*","*","*","Q","*","*","*"},//dong 4 cot 4(r:4,c:4),"*":là các nước Hậu có thể đi
+//				{" "," "," ","*","*","*"," "," "},
+//				{"P","P","P","P","P","P","P","P"},
+//				{"R","K","B","Q","A","B","K","R"},
+				//kiểm tra xem ô tiếp theo trên đường đi của Hậu có (trống) không.
+				//nếu trống thì tiếp tục đi thêm 1 ô nữa theo cùng hướng.
+				while(" ".equalsIgnoreCase(chessBoard[r+temp*j][c+temp*k])) { 
+					oldPiece = chessBoard[r+temp*j][c+temp*k]; // gán oldPiece là các ô xung quanh có thể đi
+					chessBoard[r][c] = " "; // gán vị trí mà Hậu đang ở đó trước khi đi là rỗng
+					chessBoard[r+temp*j][c+temp*k] = "Q"; // sau khi đi thì gán vị trí mới cho Hậu
+					if(kingSafe()) {
+						list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // Này là trả về các nước mà Hậu có thể đi được (bao gồm cả ăn quân)
+					}
+					//Đặt quân hậu về vị trí cũ
+					chessBoard[r][c] = "Q";
+					chessBoard[r+temp*j][c+temp*k] = oldPiece;
+					temp++;
+				}
+				if(Character.isLowerCase(chessBoard[r+temp*j][c+temp*k].charAt(0))) {
+					oldPiece = chessBoard[r+temp*j][c+temp*k];
+					chessBoard[r][c] = " ";
+					chessBoard[r+temp*j][c+temp*k] = "Q";
+					if(kingSafe()) {
+						list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece;
+					}
+					//Đặt quân hậu về vị trí cũ
+					chessBoard[r][c] = "Q";
+					chessBoard[r+temp*j][c+temp*k] = oldPiece;
+					
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			temp=1;
+		}
+	}
 	return list;
 }
 public static String possibleA(int i) {
@@ -92,7 +142,7 @@ public static String possibleA(int i) {
 //					{"R","K","B","Q","A","B","K","R"},
 //					ví dụ vua đang ở dòng 5 cột 4 thì kingPositionU lúc đầu i = 44 => vua có 5 trường hợp để đi được và i lần lượt là:kingPositionU = (35,36,37,43,45) ( vị trí mới)
 					if(kingSafe()) {
-						list = list+r+c+(r-1+j/3)+(c-1+j%3)+oldPiece;
+						list = list+r+c+(r-1+j/3)+(c-1+j%3)+oldPiece; // Này là trả về các nước mà vua có thể đi được bao gồm (ăn quân)
 						// r: fromRow, c: fromCol, (r-1+j/3): toRow, (c-1+j%3): toCol
 						//oldPiece(là chuỗi để check xem có : (1) là " ", (2) là có 1 quân nào đó nếu có quân thì ghi tên của quân đó vd: có quân q,k,r của đối thủ bao quây vua)
 //						{"r","k","b","q","a","b","k","r"},

@@ -3,8 +3,8 @@ public class AlphaBetaChess {
 	static String chessBoard[][] = {
 			{"r","k","b","q","a","b","k","r"},
 			{"p","p","p","p","p","p","p","p"},
-			{" "," "," "," "," "," "," "," "},
-			{" "," "," "," ","R"," "," "," "},//dong 3 cot 4
+			{"K"," "," "," "," "," "," "," "},
+			{" "," "," "," "," "," "," "," "},//dong 3 cot 4
 			{" "," "," "," "," "," "," "," "},
 			{" "," "," "," "," "," "," "," "},
 			{"P","P","P","P","P","P","P","P"},
@@ -292,7 +292,64 @@ public static String possibleR(int i) {
     return list;
 }
 public static String possibleK(int i) {
-	String list = "";
+	String list = "",oldPiece;
+	//Lấy vị trí Ngựa
+	int r = i/8, c = i%8;
+	for (int j = -1; j <=1; j+=2) {	
+		for (int k = -1; k <=1; k+=2) {
+			//Trường hợp: đi 1 hàng  2 cột
+			try {
+//				{"r","k","b","q","a","b","k","r"},
+//				{"p","p","p*","p","p","p","p","p"},
+//				{"K"," "," "," "," "," "," "," "},//dong 2 cot 0(r:2,c:0) ,"*" là các nước ngựa có thể đi
+//				{" "," ","*"," "," "," "," "," "},
+//				{" ",""," "," "," "," "," "," "},
+//				{" "," "," "," "," ", ""," "," "},
+//				{"P","P","P","P","P","P","P","P"},
+//				{"R","K","B","Q","A","B","K","R"},
+				if(Character.isLowerCase(chessBoard[r+j][c+k*2].charAt(0)) ||" ".equalsIgnoreCase(chessBoard[r+j][c+k*2])) { 
+					oldPiece = chessBoard[r+j][c+k*2]; // gán oldPiece là các ô xung quanh có thể đi
+					chessBoard[r][c] = " "; // gán vị trí mà ngựa đang ở đó trước khi đi là rỗng
+					chessBoard[r+j][c+k*2] = "K"; // sau khi đi thì gán vị trí mới cho ngựa
+					 if (kingSafe()) {
+	                     	list = list+r+c+(r+j)+(c+k*2)+oldPiece; // Này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
+	                     }
+					//nếu đặt quân ngựa về vị trí cũ
+					 chessBoard[r][c] = "K";
+					 chessBoard[r+j][c+k*2] = oldPiece;
+				}
+			}
+			catch (Exception e) {
+                
+            }
+//			Trường hợp: đi 2 hàng 1 cột
+			try {
+//				{"r","k*","b","q","a","b","k","r"},
+//				{"p","p","p","p","p","p","p","p"},
+//				{"K"," "," "," "," "," "," "," "},//dong 2 cot 0(r:2,c:0) ,"*" là các nước ngựa có thể đi
+//				{" "," ",""," "," "," "," "," "},
+//				{" ","*"," "," "," "," "," "," "},
+//				{"*"," ","*"," "," ", "*"," ","*"},
+//				{"P","P","P","P","P","P","P","P"},
+//				{"R","K","B","Q","A","B","K","R"},
+                if (Character.isLowerCase(chessBoard[r + 2*j][c + k].charAt(0)) ||
+                    " ".equalsIgnoreCase(chessBoard[r + 2*j][c + k])) {
+
+                    oldPiece = chessBoard[r + 2*j][c + k];
+                    chessBoard[r][c] = " ";
+                    chessBoard[r+2*j][c + k] = "K";
+
+                    if (kingSafe()) {
+                        list = list+r+c+(r+ 2*j) + (c + k) + oldPiece;
+                    }
+
+                    chessBoard[r][c] = "K";
+                    chessBoard[r + 2*j][c + k] = oldPiece;
+                }
+            } catch (Exception e) {}
+		}
+			
+	}
 	return list;
 }
 public static String possibleP(int i) {

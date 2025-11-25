@@ -3,9 +3,9 @@ public class AlphaBetaChess {
 	static String chessBoard[][] = {
 			{"r","k","b","q","a","b","k","r"},
 			{"p","p","p","p","p","p","p","p"},
-			{"K"," "," "," "," "," "," "," "},
+			{" "," "," "," "," ","k"," "," "},
 			{" "," "," "," "," "," "," "," "},//dong 3 cot 4
-			{" "," "," "," "," "," "," "," "},
+			{" "," "," ","A"," "," "," "," "},
 			{" "," "," "," "," "," "," "," "},
 			{"P","P","P","P","P","P","P","P"},
 			{"R","K","B","Q","A","B","K","R"},
@@ -357,6 +357,153 @@ public static String possibleP(int i) {
 	return list;
 }
 public static boolean kingSafe() {
+	//bishop/queen(duong cheo)
+	//(-1,-1), (-1,1), (1,-1), (1,1) 4 hướng chéo
+		//	{"r","k","b","q","a","b","k","r"},
+		//	{"p","p","p","p","p","p","p","p"},
+		//	{" "," "," "," "," ","b"," "," "},
+		//	{" "," ","*","*","!"," "," "," "},
+		//	{" "," ","*","A","*"," "," "," "},//dong 4 cot 3
+		//	{" "," ","!","*","*"," "," "," "},
+		//	{"P","P","P","P","P","P","P","P"},
+		//	{"R","K","B","Q","A","B","K","R"},
+			//4332 4333 4342 4344 4353 4354 đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu
+			//(chưa xử lí quân tốt trắng nên mới có nước đi này)	
+			// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
+	int temp = 1;
+	for (int i = -1; i <=1; i+=2) {
+		for (int j = -1; j <=1; j+=2) {
+			try {
+				// tìm cho đến khi có quân b hoặc q
+				while(" ".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8+temp*j])) {
+					temp++;
+					}
+					
+					if("b".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8+temp*j]) || 
+						"q".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8+temp*j])
+							) {
+						return false;
+					}
+				}	
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+			temp=1;
+		}
+	}
+	//rook/queen(duong thang)
+	//TH1: thẳng ngang
+		//	{"r","k","b","q","a","b","k","r"},
+		//	{"p","p","p","p","p","p","p","p"},
+		//	{" "," "," "," "," ","r"," "," "},
+		//	{" "," ","*","*","*"," "," "," "},
+		//	{" "," ","!","A","!","r"," "," "},//dong 4 cot 3
+		//	{" "," "," ","*","*"," "," "," "},
+		//	{"P","P","P","P","P","P","P","P"},
+		//	{"R","K","B","Q","A","B","K","R"},
+		//4332 4333 4334 4353 4354 đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu (4352 không đến 52 được vì K trắng đã ở chỗ đó)
+		//(chưa xử lí quân tốt trắng nên mới có nước đi này)
+		// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
+		for (int i = -1; i <=1; i+=2) {
+				try {
+					// tìm cho đến khi có quân r hoặc q
+					while(" ".equalsIgnoreCase(chessBoard[kingPositionU/8][kingPositionU%8+temp*i])) {
+						temp++;
+						}
+						
+						if("r".equalsIgnoreCase(chessBoard[kingPositionU/8][kingPositionU%8+temp*i]) || 
+							"q".equalsIgnoreCase(chessBoard[kingPositionU/8][kingPositionU%8+temp*i])) {
+							return false;
+						}
+					}	
+				catch (Exception e) {
+					// TODO: handle exception
+				}
+	//TH2: thẳng dọc
+//				{"r","k","b","q","a","b","k","r"},
+//				{"p","p","p","p","p","p","p","p"},
+//				{" "," "," ","r"," "," "," "," "},
+//				{" "," ","*","!","*"," "," "," "},
+//				{" "," ","*","A","*"," "," "," "},//dong 4 cot 3
+//				{" "," "," ","!"," "," "," "," "},
+//				{"P","P","P","P","P","P","P","P"},
+//				{"R","K","B","Q","A","B","K","R"},
+				//4332 4334 4342 4344 4354 đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu (4352 không đến 52 được vì K trắng đã ở chỗ đó)
+				//(chưa xử lí quân tốt trắng nên mới có nước đi này)
+				// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
+				temp=1;
+				try {
+					// tìm cho đến khi có quân r hoặc q
+					while(" ".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8])) {
+						temp++;
+						}
+						
+						if("r".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8]) || 
+							"q".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8])
+								) {
+							return false;
+						}
+					}	
+				catch (Exception e) {
+					// TODO: handle exception
+				}
+				temp=1;
+		}
+		//knight
+		
+		for (int i = -1; i <=1; i+=2) {
+			for (int j = -1; j <=1; j+=2) {
+				try {		
+						if("k".equalsIgnoreCase(chessBoard[kingPositionU/8+i][kingPositionU%8+j*2])) {
+							return false;
+						}
+					}	
+				catch (Exception e) {
+					// TODO: handle exception
+				}
+				try {		
+					if("k".equalsIgnoreCase(chessBoard[kingPositionU/8+i*2][kingPositionU%8+j])) {
+						return false;
+					}
+				}	
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+		//pawn
+		if(kingPositionU >= 16) {
+			try {		
+				if("p".equalsIgnoreCase(chessBoard[kingPositionU/8-1][kingPositionU%8-1])) {
+					return false;
+				}
+			}	
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+			try {		
+				if("p".equalsIgnoreCase(chessBoard[kingPositionU/8-1][kingPositionU%8+1])) {
+					return false;
+				}
+			}	
+		catch (Exception e) {
+			//king
+			for (int i = -1; i <=1; i++) {
+				for (int j = -1; j <=1; j++) {
+					if(i!=0 || j!=0) {
+					try {		
+						if("a".equalsIgnoreCase(chessBoard[kingPositionU/8+i ][kingPositionU%8+j])) {
+							return false;
+						}
+					}
+					catch (Exception e1) {
+							// TODO: handle exception
+					}
+						}
+					}	
+				}
+			}
+		}
 	return true;
 }
 }

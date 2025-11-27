@@ -450,10 +450,23 @@ public static boolean kingSafe() {
 				temp=1;
 		}
 		//knight
-		
+//		TH1: Ngựa đi theo 2 cột 1 hàng
+//		{"r","k","b","q","a","b","k","r"},
+//		{"p","p","p","p","p","p","p","p"},
+//		{" "," "," "," "," ","k"," "," "},
+//		{" "," ","*","!","*"," "," "," "},
+//		{" "," ","*","A","*"," "," "," "},//dong 4 cot 3
+//		{" "," "," ","*","*"," "," "," "},
+//		{"P","P","P","P","P","P","P","P"},
+//		{"R","K","B","Q","A","B","K","R"},
+		//4332 4334 4342 4344 4353 4354  đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu theo TH1 của ngựa (4352 không đến 52 được vì K trắng đã ở chỗ đó)
+		//(chưa xử lí quân tốt trắng nên mới có nước đi này)
+		// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
 		for (int i = -1; i <=1; i+=2) {
 			for (int j = -1; j <=1; j+=2) {
-				try {		
+				try {
+					// tìm cho đến khi có quân k
+					//(3,1),(3,5)
 						if("k".equalsIgnoreCase(chessBoard[kingPositionU/8+i][kingPositionU%8+j*2])) {
 							return false;
 						}
@@ -461,11 +474,35 @@ public static boolean kingSafe() {
 				catch (Exception e) {
 					// TODO: handle exception
 				}
+//				TH2: Ngựa đi theo 2 hàng 1 cột
+//				{"r","k","b","q","a","b","k","r"},
+//				{"p","p","p","p","p","p","p","p"},
+//				{" "," "," "," "," ","k"," "," "},
+//				{" "," ","*","*","*"," "," "," "},
+//				{" "," ","*","A","!"," "," "," "},//dong 4 cot 3
+//				{" "," "," ","*","*"," "," "," "},
+//				{"P","P","P","P","P","P","P","P"},
+//				{"R","K","B","Q","A","B","K","R"},
+				//4332 4333 4334 4342 4353 4354 đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu theo TH2 của ngựa (4352 không đến 52 được vì K trắng đã ở chỗ đó)
+				//(chưa xử lí quân tốt trắng nên mới có nước đi này)
+				// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
 				try {		
 					if("k".equalsIgnoreCase(chessBoard[kingPositionU/8+i*2][kingPositionU%8+j])) {
 						return false;
 					}
-				}	
+				}
+				//Kết hợp TH1 và TH2:
+//				{"r","k","b","q","a","b","k","r"},
+//				{"p","p","p","p","p","p","p","p"},
+//				{" "," "," "," "," ","k"," "," "},
+//				{" "," ","*","!","*"," "," "," "},
+//				{" "," ","*","A","!"," "," "," "},//dong 4 cot 3
+//				{" "," "," ","*","*"," "," "," "},
+//				{"P","P","P","P","P","P","P","P"},
+//				{"R","K","B","Q","A","B","K","R"},
+				//4332 4334 4342 4353 4354 đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu (4352 không đến 52 được vì K trắng đã ở chỗ đó)
+				//(chưa xử lí quân tốt trắng nên mới có nước đi này)
+				// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
 			catch (Exception e) {
 				// TODO: handle exception
 			}

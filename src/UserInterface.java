@@ -17,9 +17,6 @@ public class UserInterface extends JPanel implements MouseListener,MouseMotionLi
 		chessPiecesImage = new ImageIcon("pieces.png").getImage();
 		g.drawImage(chessPiecesImage, x, y,x+64,y+64,0,0,64,64, this);
 	}
-
-	
-
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -56,10 +53,4 @@ public class UserInterface extends JPanel implements MouseListener,MouseMotionLi
 		// TODO Auto-generated method stub
 		
 	}
-	
-
-	
-
-	
-
 }

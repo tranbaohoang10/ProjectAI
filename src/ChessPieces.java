@@ -1,11 +1,11 @@
 import javax.swing.*;
-public class AlphaBetaChess {
+public class ChessPieces {
 	static String chessBoard[][] = {
 			{"r","k","b","q","a","b","k","r"},
 			{"p","p","p","p","p","p","p","p"},
-			{" "," "," "," "," ","k"," "," "},
-			{" "," "," "," "," "," "," "," "},//dong 3 cot 4
-			{" "," "," ","A"," "," "," "," "},
+			{" "," "," "," "," "," "," "," "},
+			{" "," "," "," "," "," "," "," "},
+			{" "," "," "," "," "," "," "," "},
 			{" "," "," "," "," "," "," "," "},
 			{"P","P","P","P","P","P","P","P"},
 			{"R","K","B","Q","A","B","K","R"},
@@ -13,7 +13,7 @@ public class AlphaBetaChess {
 	static int kingPositionU,kingPositionL; //uppercase,lowercase
 	public static void main(String[] args) {
 //		JFrame f = new JFrame("Co vua");
-//		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		f.setDefaultCloseOperation(JFrame.EXIT_On_CLOSE);
 //		UserInterface ui = new UserInterface();
 //		f.add(ui);
 //		f.setSize(500,500);
@@ -47,7 +47,7 @@ public class AlphaBetaChess {
 				
 			
 		}
-		return list; //x1,y1,x2,y2 capture piece(ăn quân) , list này sẽ trả về các nước đi có thể đi được của từng quân
+		return list;
 	}
 	public static String possibleA(int i) {
 		String list = "",oldPiece;
@@ -56,23 +56,23 @@ public class AlphaBetaChess {
 			if(j != 4) { 
 				try {
 					if(Character.isLowerCase(chessBoard[r-1+j/3][c-1+j%3].charAt(0)) || " ".equals(chessBoard[r-1+j/3][c-1+j%3])) { // nghĩa là kiểm tra xem 8 ô xung quanh vua có quân nào hay không(00,01,02,10,12,20,21,22)
-						// Nếu không có
+						// nếu không có
+						int kingTemp = kingPositionU;
 						oldPiece =chessBoard[r-1+j/3][c-1+j%3];
 						chessBoard[r][c] = " "; //Sau khi vua đi qua ô khác thì ô của vua đang đứng sẽ rỗng
-						chessBoard[r-1+j/3][c-1+j%3] = "A"; // Gán lại vị trí của vua ở 1 trong 8 vị trí trống đó
-						int kingTemp = kingPositionU;
+						chessBoard[r-1+j/3][c-1+j%3] = "A"; // gán lại vị trí của vua ở 1 trong 8 vị trí trống đó
 						kingPositionU = i+(j/3)*8 +j%3-9; 
 //						{"r","k","b","q","a","b","k","r"},
 //						{"p","p","p","p","p","p","p","p"},
 //						{" "," "," "," "," "," "," "," "},
 //						{" "," "," "," "," "," "," "," "},
 //						{" "," "," ","*","*","*"," "," "},
-//						{" "," "," ","*","A","*"," "," "},// dòng 5 cột 4, "*": là các ô mà vua có thể đi
+//						{" "," "," ","*","A","*"," "," "},// dòng 5 cột 4, "*": là các ô mà vua có thể đi(r:5,c:4)
 //						{"P","P","P","P","P","P","P","P"},
 //						{"R","K","B","Q","A","B","K","R"},
 //						ví dụ vua đang ở dòng 5 cột 4 thì kingPositionU lúc đầu i = 44 => vua có 5 trường hợp để đi được và i lần lượt là:kingPositionU = (35,36,37,43,45) ( vị trí mới)
 						if(kingSafe()) {
-							list = list+r+c+(r-1+j/3)+(c-1+j%3)+oldPiece; // Này là trả về các nước mà vua có thể đi được bao gồm (ăn quân)
+							list = list+r+c+(r-1+j/3)+(c-1+j%3)+oldPiece; // này là trả về các nước mà vua có thể đi được bao gồm (ăn quân)
 							// r: fromRow, c: fromCol, (r-1+j/3): toRow, (c-1+j%3): toCol
 							//oldPiece(là chuỗi để check xem có : (1) là " ", (2) là có 1 quân nào đó nếu có quân thì ghi tên của quân đó vd: có quân q,k,r của đối thủ bao quây vua)
 //							{"r","k","b","q","a","b","k","r"},
@@ -124,7 +124,7 @@ public class AlphaBetaChess {
 						chessBoard[r][c] = " "; // gán vị trí mà Hậu đang ở đó trước khi đi là rỗng
 						chessBoard[r+temp*j][c+temp*k] = "Q"; // sau khi đi thì gán vị trí mới cho Hậu
 						if(kingSafe()) {
-							list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // Này là trả về các nước mà Hậu có thể đi được (bao gồm cả ăn quân)
+							list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // này là trả về các nước mà Hậu có thể đi được (bao gồm cả ăn quân)
 						}
 						//nếu đặt quân hậu về vị trí cũ
 						chessBoard[r][c] = "Q";
@@ -186,7 +186,7 @@ public class AlphaBetaChess {
 						chessBoard[r][c] = " "; // gán vị trí mà Tượng đang ở đó trước khi đi là rỗng
 						chessBoard[r+temp*j][c+temp*k] = "B"; // sau khi đi thì gán vị trí mới cho Tượng
 						if(kingSafe()) {
-							list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // Này là trả về các nước mà Tượng có thể đi được (bao gồm cả ăn quân)
+							list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // này là trả về các nước mà Tượng có thể đi được (bao gồm cả ăn quân)
 						}
 						//nếu đặt quân tượng về vị trí cũ
 						chessBoard[r][c] = "B";
@@ -207,7 +207,7 @@ public class AlphaBetaChess {
 							chessBoard[r][c] = " "; // gán vị trí mà Tượng đang ở đó trước khi đi là rỗng
 							chessBoard[r+temp*j][c+temp*k] = "B"; // sau khi đi thì gán vị trí mới cho Tượng
 							if(kingSafe()) {
-								list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // Này là trả về các nước mà Tượng có thể đi được (bao gồm cả ăn quân)
+								list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // này là trả về các nước mà Tượng có thể đi được (bao gồm cả ăn quân)
 							}
 							//nếu đặt quân tượng về vị trí cũ
 							chessBoard[r][c] = "B";
@@ -216,8 +216,7 @@ public class AlphaBetaChess {
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-				temp=1;
-			
+				temp=1;	
 			}
 		}
 		return list;
@@ -233,7 +232,8 @@ public static String possibleR(int i) {
     for (int j = -1; j <= 1; j++) {
         for (int k = -1; k <= 1; k++) {
             // loại bỏ hướng (0,0) và các hướng chéo
-            if ((j == 0 && k == 0) || (j != 0 && k != 0)) continue; //kiểm tra (j = 0 hoac k = 0) rồi mới đi tiếp 
+            if ((j == 0 && k == 0) || (j != 0 && k != 0)) continue; //kiểm tra (j=0 hoac k=0) rồi mới đi tiếp 
+            // phải có 1 thằng = 0 mới duyệt try catch
             try {
 //            	{"r","k","b","q","a","b","k","r"},
 //    			{"p","p","p","p","p*","p","p","p"},
@@ -249,7 +249,7 @@ public static String possibleR(int i) {
                     chessBoard[r+temp*j][c+temp*k] = "R"; // sau khi đi thì gán vị trí mới cho Xe
 
                     if (kingSafe()) {
-                    	list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // Này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
+                    	list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
                     }
 
                   //nếu đặt quân xe về vị trí cũ
@@ -275,7 +275,7 @@ public static String possibleR(int i) {
                      chessBoard[r+temp*j][c+temp*k] = "R"; // sau khi đi thì gán vị trí mới cho Xe
 
                      if (kingSafe()) {
-                     	list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // Này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
+                     	list = list+r+c+(r+temp*j)+(c+temp*k)+oldPiece; // này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
                      }
 
                    //nếu đặt quân xe về vị trí cũ
@@ -293,7 +293,7 @@ public static String possibleR(int i) {
 }
 public static String possibleK(int i) {
 	String list = "",oldPiece;
-	//Lấy vị trí Ngựa
+	//Lấy vị trí ngựa
 	int r = i/8, c = i%8;
 	for (int j = -1; j <=1; j+=2) {	
 		for (int k = -1; k <=1; k+=2) {
@@ -304,7 +304,7 @@ public static String possibleK(int i) {
 //				{"K"," "," "," "," "," "," "," "},//dong 2 cot 0(r:2,c:0) ,"*" là các nước ngựa có thể đi
 //				{" "," ","*"," "," "," "," "," "},
 //				{" ",""," "," "," "," "," "," "},
-//				{" "," "," "," "," ", ""," "," "},
+//				{" "," "," "," "," ", " "," "," "},
 //				{"P","P","P","P","P","P","P","P"},
 //				{"R","K","B","Q","A","B","K","R"},
 				if(Character.isLowerCase(chessBoard[r+j][c+k*2].charAt(0)) ||" ".equalsIgnoreCase(chessBoard[r+j][c+k*2])) { 
@@ -312,7 +312,7 @@ public static String possibleK(int i) {
 					chessBoard[r][c] = " "; // gán vị trí mà ngựa đang ở đó trước khi đi là rỗng
 					chessBoard[r+j][c+k*2] = "K"; // sau khi đi thì gán vị trí mới cho ngựa
 					 if (kingSafe()) {
-	                     	list = list+r+c+(r+j)+(c+k*2)+oldPiece; // Này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
+	                     	list = list+r+c+(r+j)+(c+k*2)+oldPiece; // này là trả về các nước mà Xe có thể đi được (bao gồm cả ăn quân)
 	                     }
 					//nếu đặt quân ngựa về vị trí cũ
 					 chessBoard[r][c] = "K";
@@ -353,17 +353,119 @@ public static String possibleK(int i) {
 	return list;
 }
 public static String possibleP(int i) {
-	String list = "";
+	String list = "",oldPiece;
+	//Lấy vị trí Tốt
+	int r = i/8, c = i%8;
+
+	for (int j = -1; j <=1; j+=2) {
+			try {
+				if(Character.isLowerCase(chessBoard[r-1][c+j].charAt(0)) && i >= 16) {
+					oldPiece = chessBoard[r-1][c+j]; // gán oldPiece là các ô xung quanh có thể đi
+					chessBoard[r][c] = " "; // gán vị trí mà tốt đang ở đó trước khi đi là rỗng
+					chessBoard[r-1][c+j] = "P"; // sau khi đi thì gán vị trí mới cho tốt
+					 if (kingSafe()) {
+	                     	list = list+r+c+(r-1)+(c+j)+oldPiece; 
+	                     }
+					//nếu đặt quân tốt về vị trí cũ
+					 chessBoard[r][c] = "P";
+					 chessBoard[r-1][c+j] = oldPiece;
+				}
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+			try {
+				if(Character.isLowerCase(chessBoard[r-1][c+j].charAt(0)) && i < 16) {
+					String[] temp = {"Q","R","B","K"};
+					for (int k = 0; k <4; k++) {
+						oldPiece = chessBoard[r-1][c+j]; // gán oldPiece là các ô xung quanh có thể đi
+						chessBoard[r][c] = " "; // gán vị trí mà tốt đang ở đó trước khi đi là rỗng
+						chessBoard[r-1][c+j] = temp[k]; // sau khi đi thì gán vị trí mới cho tốt
+						 if (kingSafe()) {
+							 //column1,column2,quân bị ăn,quân mới,P
+		                     	list = list+c+(c+j)+oldPiece+temp[k]+"P"; 
+		                     }
+						//nếu đặt quân tốt về vị trí cũ
+						 chessBoard[r][c] = "P";
+						 chessBoard[r-1][c+j] = oldPiece;
+					}
+					
+				}
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+	}
+	// đi 1 nước
+	try {
+		if(" ".equals(chessBoard[r-1][c]) && i >= 16) {
+			
+			oldPiece = chessBoard[r-1][c]; // gán oldPiece là các ô xung quanh có thể đi
+			chessBoard[r][c] = " "; // gán vị trí mà tốt đang ở đó trước khi đi là rỗng
+			chessBoard[r-1][c] = "P"; // sau khi đi thì gán vị trí mới cho tốt
+			 if (kingSafe()) {
+                 	list = list+r+c+(r-1)+c+oldPiece; 
+                 }
+			//nếu đặt quân tốt về vị trí cũ
+			 chessBoard[r][c] = "P";
+			 chessBoard[r-1][c] = oldPiece;
+		}
+	}
+	catch (Exception e) {
+		// TODO: handle exception
+	}
+	try {
+		if(" ".equals(chessBoard[r-1][c]) && i < 16) {
+			String[] temp = {"Q","R","B","K"};
+			for (int k = 0; k <4; k++) {
+				oldPiece = chessBoard[r-1][c]; // gán oldPiece là các ô xung quanh có thể đi
+				chessBoard[r][c] = " "; // gán vị trí mà tốt đang ở đó trước khi đi là rỗng
+				chessBoard[r-1][c] = temp[k]; // sau khi đi thì gán vị trí mới cho tốt
+				 if (kingSafe()) {
+					//column1,column2,quân bị ăn,quân mới,P
+					 list = list+c+c+oldPiece+temp[k]+"P"; 
+	                 }
+				//nếu đặt quân tốt về vị trí cũ
+				 chessBoard[r][c] = "P";
+				 chessBoard[r-1][c] = oldPiece;
+			}
+			
+		}
+	}
+	catch (Exception e) {
+		// TODO: handle exception
+	}
+	
+	// đi 2 nước
+		try {
+			if(" ".equals(chessBoard[r-1][c]) && " ".equals(chessBoard[r-2][c]) && i >= 48) {
+ 
+					oldPiece = chessBoard[r-2][c]; // gán oldPiece là các ô xung quanh có thể đi
+					chessBoard[r][c] = " "; // gán vị trí mà tốt đang ở đó trước khi đi là rỗng
+					chessBoard[r-2][c] = "P"; // sau khi đi thì gán vị trí mới cho tốt
+					 if (kingSafe()) {
+						
+						 list = list+r+c+(r-2)+c+oldPiece;
+		                 }
+					//nếu đặt quân tốt về vị trí cũ
+					 chessBoard[r][c] = "P";
+					 chessBoard[r-2][c] = oldPiece;
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
 	return list;
 }
 public static boolean kingSafe() {
+	// chú thích: mấy cái ! là khi vua đi thì xét theo dòng và cột mới
 	//bishop/queen(duong cheo)
 	//(-1,-1), (-1,1), (1,-1), (1,1) 4 hướng chéo
 		//	{"r","k","b","q","a","b","k","r"},
 		//	{"p","p","p","p","p","p","p","p"},
 		//	{" "," "," "," "," ","b"," "," "},
-		//	{" "," ","*","*","!"," "," "," "},
-		//	{" "," ","*","A","*"," "," "," "},//dong 4 cot 3
+		//	{" "," ","*","*","!"," "," "," "}, // dong 3 cot 4 có(!)
+		//	{" "," ","*","A","*"," "," "," "},//dong 4 cot 3(kingpositionU = 35)
 		//	{" "," ","!","*","*"," "," "," "},
 		//	{"P","P","P","P","P","P","P","P"},
 		//	{"R","K","B","Q","A","B","K","R"},
@@ -374,7 +476,7 @@ public static boolean kingSafe() {
 	for (int i = -1; i <=1; i+=2) {
 		for (int j = -1; j <=1; j+=2) {
 			try {
-				// tìm cho đến khi có quân b hoặc q
+				// này là nó sẽ tìm đường chéo đến vua xem có đang là ô trống không
 				while(" ".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8+temp*j])) {
 					temp++;
 					}
@@ -395,9 +497,9 @@ public static boolean kingSafe() {
 	//TH1: thẳng ngang
 		//	{"r","k","b","q","a","b","k","r"},
 		//	{"p","p","p","p","p","p","p","p"},
-		//	{" "," "," "," "," ","r"," "," "},
+		//	{" "," "," "," "," "," "," "," "},
 		//	{" "," ","*","*","*"," "," "," "},
-		//	{" "," ","!","A","!","r"," "," "},//dong 4 cot 3
+		//	{" "," ","!","A","!","r"," "," "},//dong 4 cot 3(kingpositionU=35) , // dong 4 cot 2 hoac 3 có(!)
 		//	{" "," "," ","*","*"," "," "," "},
 		//	{"P","P","P","P","P","P","P","P"},
 		//	{"R","K","B","Q","A","B","K","R"},
@@ -406,7 +508,7 @@ public static boolean kingSafe() {
 		// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
 		for (int i = -1; i <=1; i+=2) {
 				try {
-					// tìm cho đến khi có quân r hoặc q
+					// này là nó sẽ tìm đường thẳng ngang đến vua xem có đang là ô trống không
 					while(" ".equalsIgnoreCase(chessBoard[kingPositionU/8][kingPositionU%8+temp*i])) {
 						temp++;
 						}
@@ -419,21 +521,22 @@ public static boolean kingSafe() {
 				catch (Exception e) {
 					// TODO: handle exception
 				}
+				temp=1;
 	//TH2: thẳng dọc
 //				{"r","k","b","q","a","b","k","r"},
 //				{"p","p","p","p","p","p","p","p"},
 //				{" "," "," ","r"," "," "," "," "},
-//				{" "," ","*","!","*"," "," "," "},
+//				{" "," ","*","!","*"," "," "," "}, // dong 3 cot 3 có(!)
 //				{" "," ","*","A","*"," "," "," "},//dong 4 cot 3
-//				{" "," "," ","!"," "," "," "," "},
+//				{" "," "," ","!"," "," "," "," "},// dong 5 cot 3 có(!)
 //				{"P","P","P","P","P","P","P","P"},
 //				{"R","K","B","Q","A","B","K","R"},
 				//4332 4334 4342 4344 4354 đây là vị trí mà khi đi vua sẽ an toàn mà không bị chiếu (4352 không đến 52 được vì K trắng đã ở chỗ đó)
 				//(chưa xử lí quân tốt trắng nên mới có nước đi này)
 				// * là vị trí vua có thể đi, ! là vị trí vua đi thì sẽ bị chiếu
-				temp=1;
+				
 				try {
-					// tìm cho đến khi có quân r hoặc q
+					// này là nó sẽ tìm đường thẳng dọc đến vua xem có đang là ô trống không
 					while(" ".equalsIgnoreCase(chessBoard[kingPositionU/8+temp*i][kingPositionU%8])) {
 						temp++;
 						}
@@ -450,11 +553,11 @@ public static boolean kingSafe() {
 				temp=1;
 		}
 		//knight
-//		TH1: Ngựa đi theo 2 cột 1 hàng
+//		TH1: ngựa đi theo 2 cột 1 hàng
 //		{"r","k","b","q","a","b","k","r"},
 //		{"p","p","p","p","p","p","p","p"},
 //		{" "," "," "," "," ","k"," "," "},
-//		{" "," ","*","!","*"," "," "," "},
+//		{" "," ","*","!","*"," "," "," "}, // dòng 3 cột 3 có (!)
 //		{" "," ","*","A","*"," "," "," "},//dong 4 cot 3
 //		{" "," "," ","*","*"," "," "," "},
 //		{"P","P","P","P","P","P","P","P"},
@@ -465,8 +568,8 @@ public static boolean kingSafe() {
 		for (int i = -1; i <=1; i+=2) {
 			for (int j = -1; j <=1; j+=2) {
 				try {
-					// tìm cho đến khi có quân k
-					//(3,1),(3,5)
+					// này là nó sẽ tìm đường theo 2 cột 1 hàng đến vua xem có đang là ô trống không
+					//(2,1),(2,5)
 						if("k".equalsIgnoreCase(chessBoard[kingPositionU/8+i][kingPositionU%8+j*2])) {
 							return false;
 						}
@@ -474,12 +577,12 @@ public static boolean kingSafe() {
 				catch (Exception e) {
 					// TODO: handle exception
 				}
-//				TH2: Ngựa đi theo 2 hàng 1 cột
+//				TH2: ngựa đi theo 2 hàng 1 cột
 //				{"r","k","b","q","a","b","k","r"},
 //				{"p","p","p","p","p","p","p","p"},
 //				{" "," "," "," "," ","k"," "," "},
 //				{" "," ","*","*","*"," "," "," "},
-//				{" "," ","*","A","!"," "," "," "},//dong 4 cot 3
+//				{" "," ","*","A","!"," "," "," "},//dong 4 cot 3 , dong 4 cot 4 co (!)
 //				{" "," "," ","*","*"," "," "," "},
 //				{"P","P","P","P","P","P","P","P"},
 //				{"R","K","B","Q","A","B","K","R"},
@@ -495,8 +598,8 @@ public static boolean kingSafe() {
 //				{"r","k","b","q","a","b","k","r"},
 //				{"p","p","p","p","p","p","p","p"},
 //				{" "," "," "," "," ","k"," "," "},
-//				{" "," ","*","!","*"," "," "," "},
-//				{" "," ","*","A","!"," "," "," "},//dong 4 cot 3
+//				{" "," ","*","!","*"," "," "," "}, // dong 3 cot 3 co (!)
+//				{" "," ","*","A","!"," "," "," "},//dong 4 cot 3 , // dong 4 cot 4 co (!)
 //				{" "," "," ","*","*"," "," "," "},
 //				{"P","P","P","P","P","P","P","P"},
 //				{"R","K","B","Q","A","B","K","R"},
@@ -529,7 +632,7 @@ public static boolean kingSafe() {
 				for (int j = -1; j <=1; j++) {
 					if(i!=0 || j!=0) {
 					try {		
-						if("a".equalsIgnoreCase(chessBoard[kingPositionU/8+i ][kingPositionU%8+j])) {
+						if("a".equalsIgnoreCase(chessBoard[kingPositionU/8+i][kingPositionU%8+j])) {
 							return false;
 						}
 					}
